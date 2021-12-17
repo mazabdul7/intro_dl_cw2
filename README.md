@@ -1,4 +1,7 @@
 # COMP0090 - Introduction to Deep Learning - Coursework 2
+#### Additional Pip Modules:
+ - Scikit
+ - Matplotlib
 #### Group Members:  
 - Mazin Abdulmahmood – Machine Learning
 - Wing Chung Law – Robotics and Computation
