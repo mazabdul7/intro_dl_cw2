@@ -1,5 +1,5 @@
 # COMP0090 - Introduction to Deep Learning - Coursework 2
-Group Members:  
+#### Group Members:  
 - Mazin Abdulmahmood – Machine Learning
 - Wing Chung Law – Robotics and Computation
 - Ying-Lun Cheng – Machine Learning
