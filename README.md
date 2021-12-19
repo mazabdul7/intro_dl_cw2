@@ -1,5 +1,6 @@
 # COMP0090 - Introduction to Deep Learning - Coursework 2
-#### Additional Pip Modules:
+#### Pip Modules:
+ - Tensorflow
  - Scikit
  - Matplotlib
 #### Group Members:  
