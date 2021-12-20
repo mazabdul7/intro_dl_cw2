@@ -50,7 +50,7 @@ class DataLoader:
         return self.load_ds_generator(self.mask_path, val=val)
     
     def get_binary_ds(self, val=False):
-        ''' Returns batched tf.Dataset generator object for masks h5 dataset '''
+        ''' Returns batched tf.Dataset generator object for binary.h5 dataset '''
         return self.load_ds_generator(self.bin_path, val=val)
     
     def get_bboxes_ds(self, val=False):
