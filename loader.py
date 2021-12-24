@@ -1,4 +1,5 @@
 # Ensure you have downloaded the OxPet dataset and unzipped it to datasets folder
+# Images are 256x256x3
 import h5py
 import os
 import tensorflow as tf
