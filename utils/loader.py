@@ -4,7 +4,6 @@ import h5py
 import os
 import tensorflow as tf
 
-
 class Generator:
     ''' 
         Generator yields inputs from file efficiently. File is opened once
@@ -22,7 +21,7 @@ class Generator:
 
 
 class DataLoader:
-    def __init__(self, batch_size):
+    def __init__(self, auto_batch : bool = False, batch_size : int = None):
         # Paths relative to working directory
         self.img_path = r'images.h5 '
         self.mask_path = r'masks.h5 '
@@ -32,7 +31,12 @@ class DataLoader:
         self.val_path = r'datasets/val'
 
         # Configs
-        self.batch_size = batch_size
+        self.auto_batch = auto_batch
+        
+        if self.auto_batch and not batch_size:
+            raise Exception('Args: batch_size must be passed if auto batching is used!')
+        else:
+            self.batch_size = batch_size
 
     def load_ds_generator(self, path, val=False):
         ''' 
@@ -42,7 +46,10 @@ class DataLoader:
         ds = tf.data.Dataset.from_generator(
             Generator(os.path.join(
                 self.train_path if not val else self.val_path, path)),
-            tf.float32).batch(self.batch_size, drop_remainder=True, num_parallel_calls=self.batch_size)
+            tf.float32)
+        
+        if self.auto_batch:
+            ds.batch(self.batch_size)
 
         return ds
 
