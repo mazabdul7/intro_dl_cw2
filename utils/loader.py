@@ -19,8 +19,12 @@ class Generator:
         with h5py.File(self.path, 'r') as f:  # With scope for safe file exit incase memleaks
             d_name = list(f.keys())[0]
             num_images = len(f[d_name])
-            for i in range(self.batch_size, num_images, self.batch_size):
-                yield f[d_name][i-self.batch_size:i]
+            idx = list(range(num_images))
+            random.seed(1337)
+            random.shuffle(idx)
+            
+            for i in idx:
+                yield f[d_name][i]
 
 
 class DataLoader:
