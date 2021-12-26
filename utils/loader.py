@@ -3,6 +3,7 @@
 import h5py
 import os
 import tensorflow as tf
+import random
 
 class Generator:
     ''' 
@@ -10,18 +11,20 @@ class Generator:
         and yields until outputs are exhausted without loading entire ds into memory.
     '''
 
-    def __init__(self, path):
+    def __init__(self, path, batch_size):
         self.path = path
+        self.batch_size = batch_size
 
     def __call__(self):
         with h5py.File(self.path, 'r') as f:  # With scope for safe file exit incase memleaks
             d_name = list(f.keys())[0]
-            for im in f[d_name]:
-                yield im
+            num_images = len(f[d_name])
+            for i in range(self.batch_size, num_images, self.batch_size):
+                yield f[d_name][i-self.batch_size:i]
 
 
 class DataLoader:
-    def __init__(self, auto_batch : bool = False, batch_size : int = None):
+    def __init__(self, batch_size):
         # Paths relative to working directory
         self.img_path = r'images.h5 '
         self.mask_path = r'masks.h5 '
@@ -31,13 +34,8 @@ class DataLoader:
         self.val_path = r'datasets/val'
 
         # Configs
-        self.auto_batch = auto_batch
+        self.batch_size = batch_size
         
-        if self.auto_batch and not batch_size:
-            raise Exception('Args: batch_size must be passed if auto batching is used!')
-        else:
-            self.batch_size = batch_size
-
     def load_ds_generator(self, path, val=False):
         ''' 
             Loads and returns batched tf.Dataset generator object from passed path. 
@@ -45,11 +43,8 @@ class DataLoader:
         '''
         ds = tf.data.Dataset.from_generator(
             Generator(os.path.join(
-                self.train_path if not val else self.val_path, path)),
+                self.train_path if not val else self.val_path, path), self.batch_size),
             tf.float32)
-        
-        if self.auto_batch:
-            ds.batch(self.batch_size)
 
         return ds
 
