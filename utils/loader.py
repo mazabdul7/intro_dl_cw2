@@ -22,11 +22,9 @@ class Generator:
             hp = int(num_images*0.5372) # Weird fix :)
             
             for i in range(self.batch_size//2, num_images//2, self.batch_size//2): 
-                yield tf.concat([f[d_name][i-(self.batch_size//2):i], f[d_name][hp+i-(self.batch_size//2):hp+i]], axis=0)
+                yield tf.concat([tf.cast(f[d_name][i-(self.batch_size//2):i], tf.float32), tf.cast(f[d_name][hp+i-(self.batch_size//2):hp+i], tf.float32)], axis=0)
             
             
-
-
 class DataLoader:
     def __init__(self, batch_size):
         # Paths relative to working directory
@@ -48,7 +46,7 @@ class DataLoader:
         ds = tf.data.Dataset.from_generator(
             Generator(os.path.join(
                 self.train_path if not val else self.val_path, path), self.batch_size),
-            tf.float64)
+            tf.float32)
 
         return ds
 
