@@ -19,12 +19,12 @@ class Generator:
         with h5py.File(self.path, 'r') as f:  # With scope for safe file exit incase memleaks
             d_name = list(f.keys())[0]
             num_images = len(f[d_name])
-            idx = list(range(num_images))
-            random.seed(1337)
-            random.shuffle(idx)
+            hp = int(num_images*0.5372) # Weird fix :)
             
-            for i in idx:
-                yield f[d_name][i]
+            for i in range(self.batch_size//2, num_images//2, self.batch_size//2): 
+                yield tf.concat([f[d_name][i-(self.batch_size//2):i], f[d_name][hp+i-(self.batch_size//2):hp+i]], axis=0)
+            
+            
 
 
 class DataLoader:
@@ -48,7 +48,7 @@ class DataLoader:
         ds = tf.data.Dataset.from_generator(
             Generator(os.path.join(
                 self.train_path if not val else self.val_path, path), self.batch_size),
-            tf.float32)
+            tf.float64)
 
         return ds
 
