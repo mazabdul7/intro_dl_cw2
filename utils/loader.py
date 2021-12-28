@@ -3,7 +3,7 @@
 import h5py
 import os
 import tensorflow as tf
-import random
+
 
 class Generator:
     ''' 
@@ -19,25 +19,25 @@ class Generator:
         with h5py.File(self.path, 'r') as f:  # With scope for safe file exit incase memleaks
             d_name = list(f.keys())[0]
             num_images = len(f[d_name])
-            hp = int(num_images*0.5372) # Weird fix :)
-            
-            for i in range(self.batch_size//2, num_images//2, self.batch_size//2): 
+            hp = int(num_images*0.5372)  # Weird fix :)
+
+            for i in range(self.batch_size//2, num_images//2, self.batch_size//2):
                 yield tf.concat([tf.cast(f[d_name][i-(self.batch_size//2):i], tf.float32), tf.cast(f[d_name][hp+i-(self.batch_size//2):hp+i], tf.float32)], axis=0)
-            
-            
+
+
 class DataLoader:
     def __init__(self, batch_size):
         # Paths relative to working directory
-        self.img_path = r'images.h5 '
-        self.mask_path = r'masks.h5 '
-        self.bbox_path = r'bboxes.h5 '
-        self.bin_path = r'binary.h5 '
+        self.img_path = r'images.h5'
+        self.mask_path = r'masks.h5'
+        self.bbox_path = r'bboxes.h5'
+        self.bin_path = r'binary.h5'
         self.train_path = r'datasets/train'
         self.val_path = r'datasets/val'
 
         # Configs
         self.batch_size = batch_size
-        
+
     def load_ds_generator(self, path, val=False):
         ''' 
             Loads and returns batched tf.Dataset generator object from passed path. 
