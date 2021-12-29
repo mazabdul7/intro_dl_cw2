@@ -61,6 +61,11 @@ class MTLFramework:
         
         # Build final classification output layers
         final_layers = base_model.layers[-4:] # Get pre-trained final classification layers
+        
+        # Freeze layers
+        for layer in final_layers:
+            layer.trainable = False
+        
         x = final_layers[0](x)
         for out_layer in final_layers[-3:]:
             x = out_layer(x)
