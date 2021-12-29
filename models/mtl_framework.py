@@ -55,7 +55,7 @@ class MTLFramework:
         
         return seg_out
     
-    def add_binary_classification_head(self, base_name) -> tf.Tensor:
+    def add_binary_classification_head(self, base_name: str, trainable: bool = False) -> tf.Tensor:
         x = self.encoder_output
         base_model = EffnetEncoder('B0', self.input_shape).load_pretrained_base(base_name)
         
@@ -64,7 +64,7 @@ class MTLFramework:
         
         # Freeze layers
         for layer in final_layers:
-            layer.trainable = False
+            layer.trainable = trainable
         
         x = final_layers[0](x)
         for out_layer in final_layers[-3:]:

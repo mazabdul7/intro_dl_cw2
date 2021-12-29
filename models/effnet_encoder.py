@@ -25,9 +25,9 @@ class EffnetEncoder:
         
         return model_mapping[base_name]
         
-    def build_encoder(self) -> Model:
+    def build_encoder(self, trainable: bool = False) -> Model:
         base_model_outputs = [self.base_model.get_layer(name).output for name in self.layer_names]
         encoder = Model(inputs=self.base_model.input, outputs=base_model_outputs, name=self.encoder_name)
-        encoder.trainable = False
+        encoder.trainable = trainable
         
         return encoder
