@@ -38,8 +38,7 @@ def get_randomised_data(x_data: np.array, y_data_1: np.array, y_data_2: np.array
 def show_seg_pred(img: np.array, mask_truth: np.array, mask_pred: np.array):
     ''' Show segmentation prediction '''
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(12,12))
-    seg_max = tf.argmax(mask_pred, axis=-1)
-    seg_max = seg_max[..., tf.newaxis][0]
+    seg_max = tf.where(mask_pred > 0, 1, 0)
     ax1.imshow(tf.keras.utils.array_to_img(tf.squeeze(img)))
     ax2.imshow(tf.keras.utils.array_to_img(mask_truth))
-    ax3.imshow(seg_max)
+    ax3.imshow(tf.keras.utils.array_to_img(seg_max[0]))

@@ -15,7 +15,7 @@ class Generator:
         self.path = path
         self.batch_size = batch_size
 
-    def __call__(self):
+    def __call__(self): # We are allowed to pre-shuffle and load which could be faster and a better fix
         with h5py.File(self.path, 'r') as f:  # With scope for safe file exit incase memleaks
             d_name = list(f.keys())[0]
             num_images = len(f[d_name])

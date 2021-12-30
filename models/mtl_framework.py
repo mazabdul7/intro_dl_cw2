@@ -14,7 +14,7 @@ class MTLFramework:
         
     def get_encoder_features(self) -> list[tf.Tensor]:
         ''' Get inter and end feature map outputs from encoder '''
-        inputs = tf.keras.layers.Input(shape=[self.input_shape[0], self.input_shape[1], self.input_shape[2]])
+        inputs = tf.keras.layers.Input(shape=self.input_shape, name='input')
         self.inputs.append(inputs)
         features = self.encoder(inputs)
         
@@ -50,7 +50,7 @@ class MTLFramework:
             x = concat([x, skip])
 
         # Segmentation output tensor
-        seg_out = layers.Conv2DTranspose(filters=2, kernel_size=3, strides=2, padding='same', name='segnet_out')(x)
+        seg_out = layers.Conv2DTranspose(filters=1, kernel_size=3, strides=2, padding='same', name='segnet_out')(x)
         self.outputs.append(seg_out)
         
         return seg_out
@@ -70,7 +70,7 @@ class MTLFramework:
         for out_layer in final_layers[-3:]:
             x = out_layer(x)
         x = layers.GlobalAveragePooling2D(name='bin_class_pooling')(x)
-        bin_class_out = layers.Dense(2, activation='softmax', name='bin_class_out')(x)
+        bin_class_out = layers.Dense(1, activation='sigmoid', name='bin_class_out')(x)
         self.outputs.append(bin_class_out)
         
         return bin_class_out
