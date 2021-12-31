@@ -75,6 +75,27 @@ class MTLFramework:
         
         return bin_class_out
     
+    def add_bbox_classification_head(self, base_name: str, trainable: bool = False) -> tf.Tensor:
+        x = self.encoder_output
+        base_model = EffnetEncoder('B0', self.input_shape).load_pretrained_base(base_name)
+        
+        # Build final classification output layers
+        final_layers = base_model.layers[-4:] # Get pre-trained final classification layers
+        
+        for layer in final_layers:
+            layer.trainable = trainable
+            layer._name = layer.name + str("_bbox")
+        
+        x = final_layers[0](x)
+        for out_layer in final_layers[-3:]:
+            x = out_layer(x)
+        x = layers.GlobalAveragePooling2D(name='bbox_class_pooling')(x)
+        x = layers.BatchNormalization()(x)
+        bbox_out = layers.Dense(4, activation='linear', name='bbox_out')(x)
+        self.outputs.append(bbox_out)
+        
+        return bbox_out
+    
     def flush_output_heads(self) -> None:
         self.outputs.clear()
     
