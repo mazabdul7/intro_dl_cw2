@@ -22,18 +22,14 @@ def data_augmentation(input: tf.Tensor, mask: tf.Tensor) -> tuple[tf.Tensor]:
 
     return (input, mask)
 
-def get_randomised_data(x_data: np.array, y_data_1: np.array, y_data_2: np.array) -> tuple[np.array]:
+def get_randomised_data(args) -> tuple[np.array]:
     ''' Performs consistent shuffling on input arrays '''
-    dataset_size = len(x_data)
+    dataset_size = len(args[0])
     dataset_indices = list(range(dataset_size))
 
     train_indices = random.sample(dataset_indices, dataset_size)
 
-    x_train = x_data[train_indices, ...]
-    y_1_train = y_data_1[train_indices, ...]
-    y_2_train = y_data_2[train_indices, ...]
-
-    return (x_train, y_1_train, y_2_train)
+    return (ds[train_indices, ...] for ds in args)
 
 def show_seg_pred(img: np.array, mask_truth: np.array, mask_pred: np.array):
     ''' Show segmentation prediction '''
