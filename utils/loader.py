@@ -19,7 +19,7 @@ class Generator:
             d_name = list(f.keys())[0]
             num_images = len(f[d_name])
 
-            for i in range(self.batch_size, num_images, self.batch_size):
+            for i in range(self.batch_size, num_images, self.batch_size): # Batched sliced indexing
                 yield f[d_name][i-self.batch_size:i]
 
 
