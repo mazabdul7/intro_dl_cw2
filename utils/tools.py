@@ -2,6 +2,7 @@ import numpy as np
 import tensorflow as tf
 import random
 import matplotlib.pyplot as plt
+from tensorflow.keras import backend as K
 
 def fix_bbox(bbox: np.array) -> np.array:
     ''' Reformats the bounding box inputs into correct shape for TensorFlow display function '''
@@ -10,17 +11,22 @@ def fix_bbox(bbox: np.array) -> np.array:
     temp[2], temp[3] = bbox[3], bbox[2]
     return temp
 
-def data_augmentation(input: tf.Tensor, mask: tf.Tensor) -> tuple[tf.Tensor]:
+def data_augmentation(input: tf.Tensor, mask: tf.Tensor, bbox: tf.Tensor) -> tuple[tf.Tensor]:
     ''' Applies random flip or rotation to input and mask '''
+    bbox_mask = np.copy(bbox)
     if np.random.rand() > 0.5:
+        bbox_mask = create_mask(bbox, input.shape)
         if np.random.rand() > 0.5:
             input = tf.image.flip_left_right(input)
             mask = tf.image.flip_left_right(mask)
+            bbox_mask = tf.image.flip_left_right(bbox_mask)
         else:
             input = tf.image.rot90(input)
             mask = tf.image.rot90(mask)
-
-    return (input, mask)
+            bbox_mask = tf.image.rot90(bbox_mask)
+        bbox_mask = get_bbox_from_mask(bbox_mask)
+            
+    return (input, mask, bbox_mask)
 
 def get_randomised_data(args) -> tuple[np.array]:
     ''' Performs consistent shuffling on input arrays '''
@@ -42,3 +48,38 @@ def show_seg_pred(img: np.array, mask_truth: np.array, mask_pred: np.array, bbox
     ax2.imshow(tf.keras.utils.array_to_img(tf.squeeze(box_img)))
     ax3.imshow(tf.keras.utils.array_to_img(mask_truth))
     ax4.imshow(tf.keras.utils.array_to_img(seg_max[0]))
+    
+def create_mask(bbox, input_shape):
+    ''' Generates mask of bbox inputs '''
+    bbox = bbox.astype(np.int32)
+    shape = np.copy(input_shape)
+    shape[-1] = 1
+    temp = np.zeros(shape)
+    for i in range(input_shape[0]):
+        temp[i, bbox[i, 1]:bbox[i, 3], bbox[i, 0]:bbox[i, 2]] = 1
+        
+    return temp
+
+def get_bbox_from_mask(mask):
+    ''' Generates bbox from masks '''
+    temp = np.zeros((mask.shape[0], 4))
+    for i in range(mask.shape[0]):
+        x, y = np.nonzero(mask[i])[:2]
+        temp[i, 0] = np.min(y) # x min
+        temp[i, 1] = np.min(x) # y min
+        temp[i, 2] = np.max(y) # x max
+        temp[i, 3] = np.max(x) # y max
+        
+    return temp
+
+def calculate_iou(target_boxes, pred_boxes):
+	''' Calculates intersection area union of bounding box prediction and truth - Code borrowed from https://github.com/AndrzejBandurski '''
+	xA = K.maximum(target_boxes[..., 0], pred_boxes[..., 0])
+	yA = K.maximum(target_boxes[..., 1], pred_boxes[..., 1])
+	xB = K.minimum(target_boxes[..., 2], pred_boxes[..., 2])
+	yB = K.minimum(target_boxes[..., 3], pred_boxes[..., 3])
+	interArea = K.maximum(0.0, xB - xA) * K.maximum(0.0, yB - yA)
+	boxAArea = (target_boxes[..., 2] - target_boxes[..., 0]) * (target_boxes[..., 3] - target_boxes[..., 1])
+	boxBArea = (pred_boxes[..., 2] - pred_boxes[..., 0]) * (pred_boxes[..., 3] - pred_boxes[..., 1])
+	iou = interArea / (boxAArea + boxBArea - interArea)
+	return iou
