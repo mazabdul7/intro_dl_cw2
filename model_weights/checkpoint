@@ -1,0 +1,2 @@
+model_checkpoint_path: "EffishingNetN_Weights"
+all_model_checkpoint_paths: "EffishingNetN_Weights"

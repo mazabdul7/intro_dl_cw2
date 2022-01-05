@@ -20,6 +20,7 @@ class EffnetEncoder:
         self.base_model = self.load_pretrained_base(base_name)
 
     def load_pretrained_base(self, base_name: str) -> Model:
+        ''' Loads and returns a pre-trained EfficientNet model for a specified base name '''
         model_mapping = {
             'B0': efficientnet.EfficientNetB0(include_top=False, input_shape=self.input_shape, weights='imagenet'),
             'B1': efficientnet.EfficientNetB1(include_top=False, input_shape=self.input_shape, weights='imagenet')
@@ -28,6 +29,7 @@ class EffnetEncoder:
         return model_mapping[base_name]
 
     def build_encoder(self, trainable: bool = False) -> Model:
+        ''' Builds and returns the encoder as a Keras model '''
         base_model_outputs = [self.base_model.get_layer(
             name).output for name in self.layer_names]
         encoder = Model(inputs=self.base_model.input,

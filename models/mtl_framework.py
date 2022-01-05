@@ -59,6 +59,7 @@ class MTLFramework:
         return seg_out
 
     def add_binary_classification_head(self, base_name: str, trainable: bool = False) -> tf.Tensor:
+        ''' Builds and returns output tensor of binary classification head '''
         x = self.encoder_output
         base_model = EffnetEncoder(
             'B0', self.input_shape).load_pretrained_base(base_name)
@@ -82,6 +83,7 @@ class MTLFramework:
         return bin_class_out
 
     def add_bbox_classification_head(self, base_name: str, trainable: bool = False) -> tf.Tensor:
+        ''' Builds and returns output tensor of bounding box regression head '''
         x = self.encoder_output
         base_model = EffnetEncoder(
             'B0', self.input_shape).load_pretrained_base(base_name)
@@ -105,6 +107,7 @@ class MTLFramework:
         return bbox_out
 
     def flush_output_heads(self) -> None:
+        ''' Clear output heads of the model '''
         self.outputs.clear()
 
     def build_mtl_model(self) -> Model:
