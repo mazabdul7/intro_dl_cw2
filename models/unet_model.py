@@ -1,73 +1,75 @@
 from tensorflow.keras import Model
-from keras.models import Model, load_model
+from keras.models import Model, Sequential, clone_model
 from keras.layers import Input
 from keras.layers.core import Dropout, Lambda
 from keras.layers.convolutional import Conv2D, Conv2DTranspose
 from keras.layers.pooling import MaxPooling2D
 from keras.layers.merge import concatenate
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-from keras import backend as K
 
 
 class UNet:
     ''' UNet model '''
-
     def __init__(self,  input_shape: tuple) -> None:
         self.input_shape = input_shape
+        self.downsized_images = []
+
+    def downsample_block(self, filters: int, size: tuple):
+        ''' Downsample block '''
+        block = Sequential()
+        block.add(Conv2D(filters, size, activation='elu', kernel_initializer='he_normal', padding='same'))
+        block.add(Dropout(0.1))
+        block.add(Conv2D(filters, size, activation='elu', kernel_initializer='he_normal', padding='same'))
+
+        return block
+
+    def upsampled_image(self, filters: int):
+        block = Sequential()
+        block.add(Conv2DTranspose(filters, (2, 2),  strides=(2, 2), padding='same'))
+
+        return block
+
+    def upsample_block(self, filters: int, size: tuple):
+        ''' Upsample block '''
+        block = Sequential()
+
+        block.add(Conv2D(filters, size, activation='elu', kernel_initializer='he_normal', padding='same'))
+        block.add(Dropout(0.2))
+        block.add(Conv2D(filters, size, activation='elu', kernel_initializer='he_normal', padding='same'))
+
+        return block
 
     def build_model(self) -> Model:
         inputs = Input(self.input_shape)
+        filters = [16, 32, 64, 128]
+        depth = len(filters)
+        last_filter = 256
+        kernel_size = (3, 3)
+        down_stack = [self.downsample_block(filter, kernel_size) for filter in filters]
 
-        s = Lambda(lambda x: x / 255)(inputs)
-        # todo make helper functions for upsampling and downsampling
-        c1 = Conv2D(16, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(s)
-        c1 = Dropout(0.1)(c1)
-        c1 = Conv2D(16, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c1)
-        p1 = MaxPooling2D((2, 2))(c1)
+        x = Lambda(lambda x: x / 255)(inputs)
+        for block in down_stack:
+            x = block(x)
+            self.downsized_images.append(x)
+            x = MaxPooling2D((2, 2))(x)
 
-        c2 = Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(p1)
-        c2 = Dropout(0.1)(c2)
-        c2 = Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c2)
-        p2 = MaxPooling2D((2, 2))(c2)
+        # base of the model - basically bottom of the "U"
+        x = Conv2D(last_filter, kernel_size, activation='elu', kernel_initializer='he_normal', padding='same')(x)
+        x = Dropout(0.3)(x)
+        x = Conv2D(last_filter, kernel_size, activation='elu', kernel_initializer='he_normal', padding='same')(x)
 
-        c3 = Conv2D(64, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(p2)
-        c3 = Dropout(0.2)(c3)
-        c3 = Conv2D(64, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c3)
-        p3 = MaxPooling2D((2, 2))(c3)
+        upsampled_images = [self.upsampled_image(filter) for filter in filters]
+        # we reverse the range of depth because the input of the first outsampling will have a filter of 256
+        # and we want to convert it to 128, then 64 ... so we're going in the reverse order to the downsampling
+        up_stack = [self.upsample_block(filters[i], kernel_size) for i in reversed(range(depth))]
 
-        c4 = Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(p3)
-        c4 = Dropout(0.2)(c4)
-        c4 = Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c4)
-        p4 = MaxPooling2D(pool_size=(2, 2))(c4)
+        # we reverse them because we want to match the 1st downsized image to the last upsized etc
+        # see U diagram of UNet
+        self.downsized_images.reverse()
+        for i, block in enumerate(up_stack):
+            x = upsampled_images[i](x)
+            x = concatenate([x, self.downsized_images[i]])
+            x = block(x)
 
-        c5 = Conv2D(256, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(p4)
-        c5 = Dropout(0.3)(c5)
-        c5 = Conv2D(256, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c5)
-
-        u6 = Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same')(c5)
-        u6 = concatenate([u6, c4])
-        c6 = Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(u6)
-        c6 = Dropout(0.2)(c6)
-        c6 = Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c6)
-
-        u7 = Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same')(c6)
-        u7 = concatenate([u7, c3])
-        c7 = Conv2D(64, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(u7)
-        c7 = Dropout(0.2)(c7)
-        c7 = Conv2D(64, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c7)
-
-        u8 = Conv2DTranspose(32, (2, 2), strides=(2, 2), padding='same')(c7)
-        u8 = concatenate([u8, c2])
-        c8 = Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(u8)
-        c8 = Dropout(0.1)(c8)
-        c8 = Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c8)
-
-        u9 = Conv2DTranspose(16, (2, 2), strides=(2, 2), padding='same')(c8)
-        u9 = concatenate([u9, c1], axis=3)
-        c9 = Conv2D(16, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(u9)
-        c9 = Dropout(0.1)(c9)
-        c9 = Conv2D(16, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same')(c9)
-
-        outputs = Conv2D(1, (1, 1))(c9)
+        outputs = Conv2D(1, (1, 1))(x)
 
         return Model(inputs=[inputs], outputs=[outputs])
