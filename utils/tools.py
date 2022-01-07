@@ -103,3 +103,26 @@ def generator_img_baseline_data(images, masks):
         # Regularisation and shuffling
         X, Y = get_randomised_data([X, Y])
         yield X, Y
+
+@tf.function
+def dice_loss(ps,ts):
+    return - dice_score(ps,ts)
+
+
+def dice_binary(ps,ts):
+    ps = tf.cast(ps>=.5,dtype=ps.dtype)
+    ts = tf.cast(ts>=.5,dtype=ts.dtype)
+    return dice_score(ps,ts)
+
+
+def dice_score(ps,ts,eps=1e-7):
+    numerator = tf.reduce_sum(ts*ps,axis=[1,2,3])*2 + eps
+    denominator = tf.reduce_sum(ts,axis=[1,2,3]) + tf.reduce_sum(ps,axis=[1,2,3]) + eps
+    return numerator/denominator
+
+
+@tf.function
+def pre_process(images, labels):
+    images = tf.cast(tf.stack(images), dtype=tf.float32)
+    labels = tf.cast(tf.expand_dims(tf.stack(labels),axis=3), dtype=tf.float32)
+    return images, labels
