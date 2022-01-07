@@ -45,6 +45,7 @@ model.summary()
 checkpointer = ModelCheckpoint('model_weights/best_UNet_model.h5', verbose=1, save_best_only=True)
 results = model.fit(generator_img_baseline_data(train_imgs, train_masks), validation_data=generator_img_baseline_data(val_imgs, val_masks), batch_size=batch_size, epochs=50, callbacks=[checkpointer], steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
 
+
 # load best model
 model = load_model('model_weights/best_UNet_model.h5')
 
@@ -69,4 +70,5 @@ for i in range(3):
     ax2.set_title('Prediction')
 
     plt.show()
+
 
