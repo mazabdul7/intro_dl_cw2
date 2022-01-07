@@ -55,64 +55,6 @@ class EffnetEncoder:
 
         return encoder
 
-    def build_autoencoder_attention(self):
-        ''' Builds and returns a basic encoder model with attention (NO EFFICIENTNET BASE)'''
-        inputs = layers.Input(shape=self.input_shape)
-        x = inputs
-        output_tensors = []
-        encoder_outpus = []
-
-        up_stack = [
-            upsample_block(672, 3),
-            upsample_block(240, 3),
-            upsample_block(144, 3),
-            upsample_block(96, 3),
-        ]
-
-        down_stack = [
-            desample_block(320, 3),  # 8x8 bottleneck
-            desample_block(672, 3),
-            desample_block(240, 3),
-            desample_block(144, 3),
-            desample_block(96, 3)  # 128
-        ]
-
-        down_stack.reverse()
-
-        for down in down_stack:
-            x = down(x)
-            encoder_outpus.append(x)
-
-        encoder_stage = Model(
-            inputs=inputs, outputs=encoder_outpus, name='auto-encoder-encode')
-        encoder_outpus = []
-
-        inputs2 = layers.Input(shape=self.input_shape)
-        features = encoder_stage(inputs2)
-        x = features[-1]
-        skip_connections = reversed(features[:-1])
-
-        for up, skip in zip(up_stack, skip_connections):
-            x = up(x)
-            output_tensors.append(x)
-            concat = layers.Concatenate()
-            x = concat([x, skip])
-
-        output_tensors.reverse()
-
-        x = inputs2
-        for i in range(4):
-            x = down_stack[i](x)
-            sh = x.shape[-1]
-            x = self.se_block(x, sh)
-            x = layers.Multiply()([x, output_tensors[i]])
-            x = self.se_block(x, sh)
-            encoder_outpus.append(x)
-        x = down_stack[-1](x)
-        encoder_outpus.append(x)
-
-        return Model(inputs=inputs2, outputs=encoder_outpus, name='auto-encoder-final')
-
 def desample_block(filters: int, size: int):
     ''' Desample block '''
     initializer = random_normal_initializer(0., 0.02)
