@@ -41,8 +41,8 @@ def show_seg_pred(img: np.array, mask_truth: np.array, mask_pred: np.array, bbox
     ''' Show segmentation prediction with bounding box pred '''
     fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(12,12))
     seg_max = tf.where(mask_pred > 0, 1, 0)
-    box_img_truth = tf.image.draw_bounding_boxes(tf.cast(tf.expand_dims(img, 0), tf.float32), tools.fix_bbox(bbox_truth).reshape([1,1,4])/256, np.array([[255, 0, 0]]))
-    box_img = tf.image.draw_bounding_boxes(tf.cast(tf.expand_dims(img, 0), tf.float32), tools.fix_bbox(bbox_pred).reshape([1,1,4])/256, np.array([[0, 255, 0]]))
+    box_img_truth = tf.image.draw_bounding_boxes(tf.cast(tf.expand_dims(img, 0), tf.float32), fix_bbox(bbox_truth).reshape([1,1,4])/256, np.array([[255, 0, 0]]))
+    box_img = tf.image.draw_bounding_boxes(tf.cast(tf.expand_dims(img, 0), tf.float32), fix_bbox(bbox_pred).reshape([1,1,4])/256, np.array([[0, 255, 0]]))
     
     ax1.imshow(tf.keras.utils.array_to_img(tf.squeeze(box_img_truth)))
     ax2.imshow(tf.keras.utils.array_to_img(tf.squeeze(box_img)))
