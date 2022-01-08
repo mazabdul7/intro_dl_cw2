@@ -34,8 +34,8 @@ model_histories = []
 for fold in range(cross_validation_folds):
     print(f"-------------------- start cross val {fold + 1} --------------------")
     # CrossVal: 0 = no CV, 1 = training set, 2 = val set
-    loader1 = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val, CrossVal=1, CV_iteration=fold)
-    loader2 = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val, CrossVal=2, CV_iteration=fold)
+    loader1 = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val, CrossVal=1, CV_iteration=fold, fold=cross_validation_folds)
+    loader2 = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val, CrossVal=2, CV_iteration=fold, fold=cross_validation_folds)
 
     # get training data
     train_imgs = loader1.get_image_ds().repeat()
