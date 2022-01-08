@@ -20,7 +20,7 @@ num_val = config['num_val']
 
 cross_validation_folds = config['cross_validation_folds']
 
-num_epochs = 10
+num_epochs = 5
 
 # Instantiate and build model
 input_shape = config['input_shape']
@@ -45,6 +45,9 @@ for fold in range(cross_validation_folds):
     val_imgs = loader2.get_image_ds().repeat()
     val_masks = loader2.get_mask_ds().repeat()
 
+    ### CLEARS OLD MODELS IN CACHE
+    tf.keras.backend.clear_session()
+
     model.compile(optimizer='adam', loss=tf.keras.losses.BinaryCrossentropy(from_logits=True), metrics=[{'accuracy': 'accuracy', 'dice_binary': dice_binary}])
     model.summary()
 
@@ -54,6 +57,7 @@ for fold in range(cross_validation_folds):
     history = model.fit(generator_img_baseline_data(train_imgs, train_masks), validation_data=generator_img_baseline_data(val_imgs, val_masks), batch_size=batch_size, epochs=num_epochs, callbacks=[checkpointer], steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
 
     model_histories.append(history.history)
+
 
 print('Scores per fold:\n')
 for i in range(cross_validation_folds):
@@ -72,14 +76,14 @@ for i in range(cross_validation_folds):
 
 print('Average Scores for UNET:')
 print(f'\tTraining:')
-print(f'\t\tAccuracy: {get_mean_metric("accuracy", model_histories)} %')
-print(f'\t\tLoss: {get_mean_metric("loss", model_histories)} %')
-print(f'\t\tDice Binary: {get_mean_metric("dice_binary", model_histories)} %\n')
+print(f'\t\tAccuracy: {np.mean([model_histories[i]["accuracy"] for i in range(cross_validation_folds)]) * 100} %')
+print(f'\t\tLoss: {np.mean([model_histories[i]["loss"] for i in range(cross_validation_folds)]) * 100} %')
+print(f'\t\tDice Binary: {np.mean([model_histories[i]["dice_binary"] for i in range(cross_validation_folds)]) * 100} %\n')
 
 print(f'\tValidation:')
-print(f'\t\tAccuracy: {get_mean_metric("val_accuracy", model_histories)} %')
-print(f'\t\tLoss: {get_mean_metric("val_loss", model_histories)} %')
-print(f'\t\tDice Binary: {get_mean_metric("val_dice_binary", model_histories)} %\n')
+print(f'\t\tAccuracy: {np.mean([model_histories[i]["val_accuracy"] for i in range(cross_validation_folds)]) * 100} %')
+print(f'\t\tLoss: {np.mean([model_histories[i]["val_loss"] for i in range(cross_validation_folds)]) * 100} %')
+print(f'\t\tDice Binary: {np.mean([model_histories[i]["val_dice_binary"] for i in range(cross_validation_folds)]) * 100} %\n')
 
 # pick best model out of the 3 - used loss we can use some other factor
 best_model_idx = np.argmin(np.mean(model_histories[i]["loss"]) for i in range(cross_validation_folds))
@@ -87,23 +91,23 @@ best_model_idx = np.argmin(np.mean(model_histories[i]["loss"]) for i in range(cr
 best_model_history = model_histories[best_model_idx]
 epochs = np.arange(0, num_epochs)
 # plot all metrics
-plt.plot(epochs, best_model_history.history['loss'], label='loss')
-plt.plot(epochs, best_model_history.history['val_loss'], label='val_loss')
+plt.plot(epochs, best_model_history['loss'], label='loss')
+plt.plot(epochs, best_model_history['val_loss'], label='val_loss')
 plt.legend()
 plt.show()
 
-plt.plot(epochs, best_model_history.history['accuracy'], label='accuracy')
-plt.plot(epochs, best_model_history.history['val_accuracy'], label='val_accuracy')
+plt.plot(epochs, best_model_history['accuracy'], label='accuracy')
+plt.plot(epochs, best_model_history['val_accuracy'], label='val_accuracy')
 plt.legend()
 plt.show()
 
-plt.plot(epochs, best_model_history.history['dice_binary'], label='dice_binary')
-plt.plot(epochs, best_model_history.history['val_dice_binary'], label='val_dice_binary')
+plt.plot(epochs, best_model_history['dice_binary'], label='dice_binary')
+plt.plot(epochs, best_model_history['val_dice_binary'], label='val_dice_binary')
 plt.legend()
 plt.show()
 
 # load best model
-best_model = load_model(f'{unet_model_path}/best_UNet_model_{best_model_idx}.h5', custom_objects={"dice_binary": dice_binary})
+best_model = load_model(f'{unet_model_path}/best_UNet_model_{best_model_idx+1}.h5', custom_objects={"dice_binary": dice_binary})
 
 # fixme not sure if this is right
 loader = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val, CrossVal=0, CV_iteration=0)
