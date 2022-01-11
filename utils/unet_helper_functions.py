@@ -2,7 +2,7 @@ import numpy as np
 
 
 def get_unet_model_path(fold):
-    return f'model_weights/UNet/CV/{fold+1}.h5'
+    return f'model_weights/UNet/CV/best_unet_model_{fold+1}.h5'
 
 
 def get_unet_training_log_path(fold):
