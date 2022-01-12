@@ -2,12 +2,13 @@ from tensorflow.keras import Model, layers, Sequential
 from tensorflow.keras.applications import efficientnet
 from tensorflow import random_normal_initializer
 from models.modified_efficientnet_attention import EfficientNetB0
+from typing import Tuple
 
 
 class EffnetEncoder:
     ''' EfficientNet based encoder builder '''
 
-    def __init__(self, base_name: str, input_shape: tuple[int]) -> None:
+    def __init__(self, base_name: str, input_shape: Tuple[int]) -> None:
         self.encoder_name = f'Effnet{base_name}Encoder'
         self.input_shape = input_shape
         self.layer_names = [
@@ -45,10 +46,17 @@ class EffnetEncoder:
             Builds and returns the EfficientNet encoder with a Sigmoid gated Attention Unit as a Keras model.
             We modified the TensorFlow EfficientNet build script to incorporate the autoencoder attention (see modified_efficientnet_attention.py)
         '''
+        layer_names = [
+            'block2a_att_multiply',
+            'block3a_att_multiply',
+            'block4a_att_multiply',
+            'block6a_att_multiply',
+            'block7a_project_conv'
+        ]
         base_model = EfficientNetB0(
             input_shape=self.input_shape, include_top=False)
         base_model_outputs = [base_model.get_layer(
-            name).output for name in self.layer_names]
+            name).output for name in layer_names]
         encoder = Model(inputs=base_model.input, outputs=base_model_outputs,
                         name=self.encoder_name+'_With_Attention')
         encoder.trainable = trainable

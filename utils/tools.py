@@ -3,6 +3,7 @@ import tensorflow as tf
 import random
 import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
+from typing import Tuple
 
 def fix_bbox(bbox: np.array) -> np.array:
     ''' Reformats the bounding box inputs into correct shape for TensorFlow display function '''
@@ -11,7 +12,7 @@ def fix_bbox(bbox: np.array) -> np.array:
     temp[2], temp[3] = bbox[3], bbox[2]
     return temp
 
-def data_augmentation(input: tf.Tensor, mask: tf.Tensor, bbox: tf.Tensor) -> tuple[tf.Tensor]:
+def data_augmentation(input: tf.Tensor, mask: tf.Tensor, bbox: tf.Tensor) -> Tuple[tf.Tensor]:
     ''' Applies random flip or rotation to input and mask '''
     bbox_mask = np.copy(bbox)
     if np.random.rand() > 0.5:
@@ -28,7 +29,7 @@ def data_augmentation(input: tf.Tensor, mask: tf.Tensor, bbox: tf.Tensor) -> tup
             
     return (input, mask, bbox_mask)
 
-def get_randomised_data(args) -> tuple[np.array]:
+def get_randomised_data(args) -> Tuple[np.array]:
     ''' Performs consistent shuffling on input arrays '''
     dataset_size = len(args[0])
     dataset_indices = list(range(dataset_size))
@@ -53,7 +54,7 @@ def show_seg_pred(img: np.array, mask_truth: np.array, mask_pred: np.array, bbox
     ax3.set_title('Truth')
     ax4.set_title('Prediction')
     
-def create_mask(bbox, input_shape):
+def create_mask(bbox: np.array, input_shape):
     ''' Generates mask of bbox inputs '''
     bbox = bbox.astype(np.int32)
     shape = np.copy(input_shape)
@@ -64,7 +65,7 @@ def create_mask(bbox, input_shape):
         
     return temp
 
-def get_bbox_from_mask(mask):
+def get_bbox_from_mask(mask: np.array):
     ''' Generates bbox from masks '''
     temp = np.zeros((mask.shape[0], 4))
     for i in range(mask.shape[0]):

@@ -550,7 +550,31 @@ def block(inputs,
     x = layers.Activation(activation, name=name + 'expand_activation')(x)
     
     if count and count in [2, 3, 4, 6]: # CUSTOM ATTENTION MULTIPLICATION BY US
-      x = layers.Multiply()([x, activations.sigmoid(output_tensors.pop(0))])
+      x = layers.Multiply(name=name + 'att_multiply_start')([x, activations.sigmoid(output_tensors.pop(0))])
+      # SE BLOCK
+      filters_se = max(1, int(filters_in * se_ratio))
+      se = layers.GlobalAveragePooling2D(name=name + 'se_squeeze_temp')(x)
+      if bn_axis == 1:
+        se_shape = (filters, 1, 1)
+      else:
+        se_shape = (1, 1, filters)
+      se = layers.Reshape(se_shape, name=name + 'se_reshape_temp')(se)
+      se = layers.Conv2D(
+          filters_se,
+          1,
+          padding='same',
+          activation=activation,
+          kernel_initializer=CONV_KERNEL_INITIALIZER,
+          name=name + 'se_reduce_temp')(
+              se)
+      se = layers.Conv2D(
+          filters,
+          1,
+          padding='same',
+          activation='sigmoid',
+          kernel_initializer=CONV_KERNEL_INITIALIZER,
+          name=name + 'se_expand_temp')(se)
+      x = layers.multiply([x, se], name=name + 'att_multiply')
   else:
     x = inputs
 
