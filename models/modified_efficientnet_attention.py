@@ -1,4 +1,8 @@
 ##### MODIFIED EFFICIENTNET BUILD SCRIPT BY US ##########
+##### SEE LINES 376-418, 556-581 ########################
+
+
+
 
 # Copyright 2019 The TensorFlow Authors. All Rights Reserved.
 #
@@ -549,7 +553,7 @@ def block(inputs,
     x = layers.BatchNormalization(axis=bn_axis, name=name + 'expand_bn')(x)
     x = layers.Activation(activation, name=name + 'expand_activation')(x)
     
-    if count and count in [2, 3, 4, 6]: # CUSTOM ATTENTION MULTIPLICATION BY US
+    if count and count in [2, 3, 4, 6]: # CUSTOM ATTENTION MULTIPLICATION BY US -----------------------------
       x = layers.Multiply(name=name + 'att_multiply_start')([x, activations.sigmoid(output_tensors.pop(0))])
       # SE BLOCK
       filters_se = max(1, int(filters_in * se_ratio))
