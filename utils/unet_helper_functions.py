@@ -8,6 +8,14 @@ def get_unet_model_path(fold):
 def get_unet_training_log_path(fold):
     return f'model_weights/UNet/CV/unet_training_{fold+1}.log'
 
+
+def get_mtl_training_log_path(val: bool):
+    if val:
+        return f'model_weights/MTL/CV/mtl_val_training.log'
+    else:
+        return f'model_weights/MTL/CV/mtl_training.log'
+
+
 def get_effNet_model_path(fold):
     return f'model_weights/effNet/CV/best_EFFNET_{fold+1}.tf'
 
