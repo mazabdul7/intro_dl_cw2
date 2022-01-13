@@ -19,7 +19,7 @@ num_train, num_val, num_test = config.config['num_train'], config.config['num_va
 img_height, img_width, channels = config.config['input_shape']
 
 # Load our data pipeline
-loader = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val, CrossVal=0, CV_iteration=0)
+loader = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val)
 
 # Train set
 img_ds = loader.get_image_ds().repeat()
