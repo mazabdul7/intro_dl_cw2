@@ -4,8 +4,8 @@
 - Put into /datasets folder within in the main working directory
 #### Pip Modules:
  - Tensorflow
- - Scikit
- - Matplotlib
+ - Numpy
+ - H5py
 #### Group Members:  
 - Mazin Abdulmahmood – Machine Learning
 - Wing Chung Law – Robotics and Computation

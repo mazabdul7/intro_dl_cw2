@@ -1,11 +1,14 @@
 import tensorflow as tf
 from tensorflow.keras import Model, Sequential, layers
-from models.effnet_encoder import EffnetEncoder
+from models.effnet_encoder import EffnetEncoder, upsample_block, desample_block
+from typing import Tuple, List
 
 # test branch
 
 class MTLFramework:
-    def __init__(self, encoder: Model, input_shape: tuple[int]) -> None:
+    ''' Modulare MTL framework that lets us quickly add auxillary tasks to an encoder in a plug-and-play fashion '''
+
+    def __init__(self, encoder: Model, input_shape: Tuple[int]) -> None:
         self.encoder = encoder
         self.input_shape = input_shape
         self.outputs = []
@@ -14,7 +17,7 @@ class MTLFramework:
         self.skips = self.get_encoder_features()
         self.encoder_output = self.skips[-1]
 
-    def get_encoder_features(self) -> list[tf.Tensor]:
+    def get_encoder_features(self) -> List[tf.Tensor]:
         ''' Get inter and end feature map outputs from encoder '''
         inputs = tf.keras.layers.Input(shape=self.input_shape, name='input')
         self.inputs.append(inputs)
@@ -22,28 +25,16 @@ class MTLFramework:
 
         return features
 
-    def upsample_block(self, filters: int, size: int):
-        ''' Upsample block '''
-        initializer = tf.random_normal_initializer(0., 0.02)
-
-        block = Sequential()
-        block.add(layers.Conv2DTranspose(filters, size, strides=2, padding='same',
-                  kernel_initializer=initializer, use_bias=False, name='upsample_conv'))
-        block.add(layers.BatchNormalization(name='upsample_bn'))
-        block.add(layers.ReLU(name='upsample_relu'))
-
-        return block
-
     def add_segmentation_head(self) -> tf.Tensor:
         ''' Builds and returns output tensor of segmentation head '''
         skip_connections = reversed(self.skips[:-1])
         x = self.encoder_output  # Encoder output tensor
 
         up_stack = [
-            self.upsample_block(512, 3),
-            self.upsample_block(256, 3),
-            self.upsample_block(128, 3),
-            self.upsample_block(64, 3),
+            upsample_block(512, 3),
+            upsample_block(256, 3),
+            upsample_block(128, 3),
+            upsample_block(64, 3),
         ]
 
         # Upsampling and establishing the skip connections
@@ -59,7 +50,7 @@ class MTLFramework:
 
         return seg_out
 
-    def add_binary_classification_head(self, base_name: str, trainable: bool = False) -> tf.Tensor:
+    def add_binary_classification_head(self, base_name: str, trainable: bool = False, output_size: int = 1, activation: str = 'sigmoid') -> tf.Tensor:
         ''' Builds and returns output tensor of binary classification head '''
         x = self.encoder_output
         base_model = EffnetEncoder(
@@ -78,7 +69,7 @@ class MTLFramework:
             x = out_layer(x)
         x = layers.GlobalAveragePooling2D(name='bin_class_pooling')(x)
         bin_class_out = layers.Dense(
-            1, activation='sigmoid', name='bin_class_out')(x)
+            output_size, activation=activation, name='bin_class_out')(x)
         self.outputs.append(bin_class_out)
 
         return bin_class_out
