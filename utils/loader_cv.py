@@ -44,7 +44,7 @@ class Generator:
                         yield f[d_name][i-self.batch_size:i]
 
 
-class DataLoader:
+class DataLoaderCV:
     def __init__(self, batch_size, batch_size_val=64, CrossVal=0, CV_iteration=0, fold=0):
         # Paths relative to working directory
         self.img_path = r'images.h5'

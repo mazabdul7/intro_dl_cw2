@@ -8,7 +8,7 @@ import random
 
 from models.unet_model import UNet
 from utils.config import config
-from utils.loader import DataLoader
+from utils.loader_cv import DataLoaderCV as DataLoader
 from utils.tools import generator_img_baseline_data, dice_binary
 from utils.unet_helper_functions import get_unet_model_path, get_unet_training_log_path, print_model_metric_analysis, \
     print_models_average_metric_analysis
