@@ -110,3 +110,5 @@ csv_logger = CSVLogger(get_mtl_training_log_path(), separator=',', append=False)
 
 history = model.fit(generator_img(), validation_data=generator_img_val(), epochs=10,
                     steps_per_epoch=num_train // batch_size, validation_steps=num_val // batch_size_val, callbacks=[csv_logger])
+
+model.save_model('model_weights/EffishingNetN')
