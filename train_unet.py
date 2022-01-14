@@ -10,10 +10,9 @@ from models.unet_model import UNet
 from utils.config import config
 from utils.loader_cv import DataLoaderCV as DataLoader
 from utils.tools import generator_img_baseline_data, dice_binary
-from utils.unet_helper_functions import get_unet_model_path, get_unet_training_log_path, print_model_metric_analysis, \
+from utils.helper_functions import get_unet_model_path, get_unet_training_log_path, print_model_metric_analysis, \
     print_models_average_metric_analysis
 
-import pandas as pd
 
 batch_size = config['unet_batch_size']
 batch_size_val = config['unet_batch_size']
@@ -78,6 +77,7 @@ print_models_average_metric_analysis(model_histories, cross_validation_folds)
 # pick best model out of the 3 - used loss we can use some other factor
 average_loss_per_model = [np.mean(model_histories[i]["loss"]) for i in range(cross_validation_folds)]
 best_model_idx = np.argmin(average_loss_per_model)
+print(f"Best model for UNet: {best_model_idx+1}")
 
 best_model_history = model_histories[best_model_idx]
 epochs = np.arange(0, num_epochs)
@@ -99,7 +99,7 @@ plt.legend()
 plt.show()
 
 # load best model
-best_model = load_model(get_unet_model_path(best_model_idx+1), custom_objects={"dice_binary": dice_binary})
+best_model = load_model(get_unet_model_path(best_model_idx), custom_objects={"dice_binary": dice_binary})
 
 # Load and get test data
 loader = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val, CrossVal=0, CV_iteration=0)

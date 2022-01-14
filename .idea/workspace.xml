@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0efebc2b-bb17-48b7-99f6-9a4caeffb40d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/train_mtl.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_mtl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train_mtl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/effnet_CrossValidation.py" beforeDir="false" afterPath="$PROJECT_DIR$/effnet_CrossValidation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/best_unet_model_1.h5" beforeDir="false" afterPath="$PROJECT_DIR$/model_weights/UNet/CV/best_unet_model_1.h5" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/unet_training_1.log" beforeDir="false" afterPath="$PROJECT_DIR$/model_weights/UNet/CV/unet_training_1.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/MTL/training_logs_2.log" beforeDir="false" afterPath="$PROJECT_DIR$/comparing_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train_unet.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_unet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/unet_helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/helper_functions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,10 +50,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/model_weights" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.mtl">
+  <component name="RunManager" selected="Python.compare">
     <configuration name="baseline" type="PythonConfigurationType" factoryName="Python">
       <module name="intro_dl_cw2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -60,6 +68,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train_unet.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="compare" type="PythonConfigurationType" factoryName="Python">
+      <module name="intro_dl_cw2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/miniforge3/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/comparing_models.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -92,6 +121,7 @@
     <list>
       <item itemvalue="Python.baseline" />
       <item itemvalue="Python.mtl" />
+      <item itemvalue="Python.compare" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
