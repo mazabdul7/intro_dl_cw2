@@ -1,8 +1,7 @@
 **/datasets
 **/__pycache__
 <<<<<<< HEAD
-**/saved_models
-**/zoo
 .DS_store
 **/model_weights
-**/oeq
+.idea
+.ipynb_checkpoints
