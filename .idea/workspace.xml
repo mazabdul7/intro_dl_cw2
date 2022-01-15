@@ -8,8 +8,11 @@
       <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/best_unet_model_1.h5" beforeDir="false" afterPath="$PROJECT_DIR$/model_weights/UNet/CV/best_unet_model_1.h5" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/unet_training_1.log" beforeDir="false" afterPath="$PROJECT_DIR$/model_weights/UNet/CV/unet_training_1.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/MTL/training_logs_2.log" beforeDir="false" afterPath="$PROJECT_DIR$/comparing_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/py_scripts/compare_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/py_scripts/compare_models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train_unet.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_unet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/unet_helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/helper_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/helper_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/loader_cv.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/loader_cv.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,11 +66,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="$USER_HOME$/miniforge3/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/py_scripts" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train_unet.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/py_scripts/train_unet.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -84,11 +87,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="$USER_HOME$/miniforge3/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/py_scripts" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/comparing_models.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/py_scripts/compare_models.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />

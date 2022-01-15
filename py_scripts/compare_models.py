@@ -23,7 +23,7 @@ epochs = np.arange(0, 10)
 def plot_metrics_of_models(model_logs1, model1_name, model_logs2, model2_name, epochs, isMTL = False):
     if isMTL:
         plt.plot(epochs, model_logs1['segnet_out_loss'], label=f'{model1_name} loss')
-        plt.plot(epochs, model_logs1['segnet_out_val_loss'], label=f'{model1_name} val_loss')
+        plt.plot(epochs, model_logs1['val_segnet_out_loss'], label=f'{model1_name} val_loss')
     else:
         plt.plot(epochs, model_logs1['loss'], label=f'{model1_name} loss')
         plt.plot(epochs, model_logs1['val_loss'], label=f'{model1_name}val_loss')

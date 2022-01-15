@@ -29,9 +29,9 @@ class DataLoader:
         self.mask_path = r'masks.h5'
         self.bbox_path = r'bboxes.h5'
         self.bin_path = r'binary.h5'
-        self.train_path = r'datasets/train'
-        self.val_path = r'datasets/val'
-        self.test_path = r'datasets/test'
+        self.train_path = r'../datasets/train'
+        self.val_path = r'../datasets/val'
+        self.test_path = r'../datasets/test'
 
         # Configs
         self.batch_size = batch_size
