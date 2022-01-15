@@ -119,7 +119,7 @@ fig.savefig('main_mtl_training_history_plot.png')
 
 # Save the model
 print('Saving model...')
-model.save_model('model_weights/EffishingNetN')
+model.save('model_weights/EffishingNetN')
 
 # Test on test-
 print('Testing the model...')
