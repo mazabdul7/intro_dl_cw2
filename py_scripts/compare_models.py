@@ -2,8 +2,7 @@
 import numpy as np
 from keras.models import load_model
 from matplotlib import pyplot as plt
-from tensorflow import keras
-
+from tensorflow import where
 from utils.config import config
 import pandas as pd
 
@@ -15,12 +14,19 @@ from utils.tools import dice_binary
 
 batch_size = config['unet_batch_size']
 batch_size_val = config['unet_batch_size']
+
+img_height = config['input_shape'][0]
+img_width = config['input_shape'][1]
 epochs = np.arange(0, 10)
 
 # plot model1 vs model2 metrics
 def plot_metrics_of_models(model_logs1, model1_name, model_logs2, model2_name, epochs, isMTL = False):
-    plt.plot(epochs, model_logs1['loss'], label=f'{model1_name} loss')
-    plt.plot(epochs, model_logs1['val_loss'], label=f'{model1_name}val_loss')
+    if isMTL:
+        plt.plot(epochs, model_logs1['segnet_out_loss'], label=f'{model1_name} loss')
+        plt.plot(epochs, model_logs1['segnet_out_val_loss'], label=f'{model1_name} val_loss')
+    else:
+        plt.plot(epochs, model_logs1['loss'], label=f'{model1_name} loss')
+        plt.plot(epochs, model_logs1['val_loss'], label=f'{model1_name}val_loss')
 
     plt.plot(epochs, model_logs2['loss'], label=f'{model2_name} loss')
     plt.plot(epochs, model_logs2['val_loss'], label=f'{model2_name} val_loss')
@@ -89,9 +95,21 @@ print(f"EffNet Accuracy {effnet_test_accuracy * 100}%")
 mtl_logs = pd.read_csv(get_mtl_training_log_path(), sep=',', engine='python')
 effnet_logs = pd.read_csv(get_effNet_training_log_path(2), sep=',', engine='python')
 
-plot_metrics_of_models(mtl_logs, 'MTL', effnet_logs, 'EffNet', epochs)
+plot_metrics_of_models(mtl_logs, 'MTL', effnet_logs, 'EffNet', epochs, True)
 
-best_mtl_model = load_model('model_weights/EffishingNetN')
-mtl_loader = DataLoader(batch_size=batch_size, batch_size_val=batch_size_val)
-mtl_test_accuracy = compute_test_set_accuracy_for_model(mtl_loader, best_mtl_model)
-print(f"MTL Accuracy {mtl_test_accuracy * 100}%")
+mtl_model = load_model('model_weights/EffishingNetN')
+mtl_loader = DataLoaderCV(batch_size=batch_size, batch_size_val=batch_size_val, CrossVal=0, CV_iteration=0)
+
+# Load test-set
+img_ds_test = mtl_loader.get_image_ds(test_mode=True)
+masks_ds_test = mtl_loader.get_mask_ds(test_mode=True)
+label_ds_test = mtl_loader.get_binary_ds(test_mode=True)
+bbox_ds_test = mtl_loader.get_bboxes_ds(test_mode=True)
+
+# Predict on test-set
+seg_pred, bin_pred, bbox_pred = mtl_model.predict(img_ds_test, batch_size=10)
+seg_pred = where(seg_pred >= 0, 1, 0) # Convert to {0,1} binary classes
+
+seg_acc = np.sum(seg_pred == masks_ds_test)/(masks_ds_test.shape[0]*(img_height*img_width))
+print(f'MTL Accuracy : {round(seg_acc*100, 3)}%')
+print(f"EffNet Accuracy {effnet_test_accuracy * 100}%")
