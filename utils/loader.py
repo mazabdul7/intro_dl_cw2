@@ -1,4 +1,9 @@
+#
+# Loader that returns a generator 
+#
 # Ensure you have downloaded the OxPet dataset and unzipped it to datasets folder
+#
+
 import h5py
 import os
 import tensorflow as tf
@@ -8,6 +13,7 @@ class Generator:
     ''' 
         Generator yields inputs from file efficiently. File is opened once
         and yields until outputs are exhausted without loading entire ds into memory.
+        Returns unshuffled batch as we designed it to allow shuffling in the main code (see training scripts).
     '''
     def __init__(self, path, batch_size):
         self.path = path
