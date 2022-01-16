@@ -2,23 +2,23 @@ import numpy as np
 
 
 def get_unet_model_path(fold):
-    return f'model_weights/UNet/CV/best_unet_model_{fold+1}.h5'
+    return f'../model_weights/UNet/CV/best_unet_model_{fold+1}.h5'
 
 
 def get_unet_training_log_path(fold):
-    return f'model_weights/UNet/CV/unet_training_{fold+1}.log'
+    return f'../model_weights/UNet/CV/unet_training_{fold+1}.log'
 
 
 def get_mtl_training_log_path():
-    return f'model_weights/MTL/training_logs.log'
+    return f'../model_weights/MTL/training_logs.log'
 
 
 def get_effNet_model_path(fold):
-    return f'model_weights/effNet/CV/best_EFFNET_{fold+1}.tf'
+    return f'../model_weights/effNet/CV/best_EFFNET_{fold+1}.tf'
 
 
 def get_effNet_training_log_path(fold):
-    return f'model_weights/effNet/CV/EFFNET_training_{fold+1}.log'
+    return f'../model_weights/effNet/CV/EFFNET_training_{fold+1}.log'
 
 def print_model_metric_analysis(history):
     print(f'\tTraining:')
