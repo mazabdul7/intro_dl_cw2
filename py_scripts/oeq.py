@@ -86,13 +86,14 @@ model.summary()
 # Train model
 # Initial training
 print('\nBeginning training...')
+epochs = 10
 model.compile(optimizer=keras.optimizers.Adam(),
               loss={'segnet_out' : tf.keras.losses.BinaryCrossentropy(from_logits=True),
                     'bin_class_out' : tf.keras.losses.BinaryCrossentropy(),
                     'bbox_out' : tf.keras.losses.MeanAbsoluteError()},
               loss_weights=[1,1,1/100], # Scale MAE to BC range
               metrics=['accuracy'])
-history = model.fit(generator_img(), validation_data=generator_img_val(), epochs=15, steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
+history = model.fit(generator_img(), validation_data=generator_img_val(), epochs=epochs, steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
 
 # Fine-tuning at lower LR
 print('Beginning fine-tuning...')
@@ -106,13 +107,13 @@ history_sec = model.fit(generator_img(), validation_data=generator_img_val(), ep
 
 print('Saving plot of training...')
 fig, ax = plt.subplots(figsize=(8,6))
-ax.plot(list(range(10)), history.history['segnet_out_accuracy'], 'r-', label='Segmentation - Training Accuracy')
-ax.plot(list(range(10)), history.history['val_segnet_out_accuracy'], 'r--', label='Segmentation - Validation Accuracy')
-ax.plot(list(range(10)), history.history['bin_class_out_accuracy'], 'c-', label='Classification - Training Accuracy')
-ax.plot(list(range(10)), history.history['val_bin_class_out_accuracy'], 'c--', label='Classification - Validation Accuracy')
+ax.plot(list(range(epochs)), history.history['segnet_out_accuracy'], 'r-', label='Segmentation - Training Accuracy')
+ax.plot(list(range(epochs)), history.history['val_segnet_out_accuracy'], 'r--', label='Segmentation - Validation Accuracy')
+ax.plot(list(range(epochs)), history.history['bin_class_out_accuracy'], 'c-', label='Classification - Training Accuracy')
+ax.plot(list(range(epochs)), history.history['val_bin_class_out_accuracy'], 'c--', label='Classification - Validation Accuracy')
 ax2 = ax.twinx()
-ax.plot(list(range(10)), history.history['bbox_out_accuracy'], 'm-', label='Bounding Box - Training Accuracy')
-ax.plot(list(range(10)), history.history['val_bbox_out_accuracy'], 'm--', label='Bounding Box - Validation Accuracy')
+ax.plot(list(range(epochs)), history.history['bbox_out_accuracy'], 'm-', label='Bounding Box - Training Accuracy')
+ax.plot(list(range(epochs)), history.history['val_bbox_out_accuracy'], 'm--', label='Bounding Box - Validation Accuracy')
 ax.legend()
 ax.set_xlabel('Epochs')
 ax.set_ylabel('Segmentation/Classification Accuracy')
