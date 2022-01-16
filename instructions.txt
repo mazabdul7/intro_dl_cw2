@@ -2,6 +2,17 @@ Hello and Welcome to our COMP0090 CW2 Project!
 
 This projects includes the following runnable python scripts, all found in the root folder:
 
+Prerequisites:
+1. First install the required pip dependencies listed here or directly pip install the requirements.txt:
+    - Matplotlib
+    - Pandas
+2. We use the NEW OxPet dataset provided by Shaheer - please clone this from: https://weisslab.cs.ucl.ac.uk/WEISSTeaching/datasets/-/tree/oxpet/data_new
+    and place in a folder called 'datasets' situated within the main working directory. I.e it should look like this
+    - /datasets 
+        - /test 
+        - /train 
+        - /val
+
 1. Baseline Models
     1. train_unet:
         - Trains a UNet model using 3fold validation.
