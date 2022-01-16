@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 from utils.loader import DataLoader
 from models.effnet_encoder import EffnetEncoder
 from models.mtl_framework import MTLFramework
@@ -44,8 +45,8 @@ def generator_img_val():
         yield X, (Y1, Y2, Y3)
 
 # Set configs
-batch_size = 16
-batch_size_val = 16
+batch_size = 8
+batch_size_val = 8
 num_train, num_val, num_test = config.config['num_train'], config.config['num_val'], config.config['num_test']
 img_height, img_width, channels = config.config['input_shape']
 
@@ -91,7 +92,7 @@ model.compile(optimizer=keras.optimizers.Adam(),
                     'bbox_out' : tf.keras.losses.MeanAbsoluteError()},
               loss_weights=[1,1,1/100], # Scale MAE to BC range
               metrics=['accuracy'])
-history = model.fit(generator_img(), validation_data=generator_img_val(), epochs=15, steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
+history = model.fit(generator_img(), validation_data=generator_img_val(), epochs=1, steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
 
 # Fine-tuning at lower learning rate
 print('\nBeginning fine-tuning...')
@@ -101,8 +102,9 @@ model.compile(optimizer=keras.optimizers.Adam(1e-4),
                     'bbox_out' : tf.keras.losses.MeanAbsoluteError()},
               loss_weights=[1,1,1/100], # Scale MAE to BC range
               metrics=['accuracy'])
-history_sec = model.fit(generator_img(), validation_data=generator_img_val(), epochs=10, steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
+history_sec = model.fit(generator_img(), validation_data=generator_img_val(), epochs=1, steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
 
+print('Saving plot of training...')
 fig, ax = plt.subplots(figsize=(8,6))
 ax.plot(list(range(10)), history.history['segnet_out_accuracy'], 'r-', label='Segmentation - Training Accuracy')
 ax.plot(list(range(10)), history.history['val_segnet_out_accuracy'], 'r--', label='Segmentation - Validation Accuracy')
@@ -141,17 +143,23 @@ seg_acc = np.sum(seg_pred == masks_ds_test)/(masks_ds_test.shape[0]*(img_height*
 iou = np.mean(tools.calculate_iou(bbox_ds_test, bbox_pred))
 print(f'Binary Acc: {round(bin_acc*100, 3)}%,   Seg Acc: {round(seg_acc*100, 3)}%,    BBox IOU: {round(iou*100, 3)}%')
 
-# Get precision
-m = tf.keras.metrics.Precision()
-m.update_state(seg_pred, masks_ds_test)
-print(f'Precision of network: {m.result().numpy()}')
+# # Get precision
+# m = tf.keras.metrics.Precision()
+# m.update_state(seg_pred, masks_ds_test)
+# print(f'Precision of network: {m.result().numpy()}')
 
-# Get recall
-m = tf.keras.metrics.Recall()
-m.update_state(seg_pred, masks_ds_test)
-print(f'Recall of network: {m.result().numpy()}')
+# # Get recall
+# m = tf.keras.metrics.Recall()
+# m.update_state(seg_pred, masks_ds_test)
+# print(f'Recall of network: {m.result().numpy()}')
 
-# Get Dice metric
-m = tf.keras.metrics.MeanIoU(num_classes=2)
-m.update_state(seg_pred, masks_ds_test)
-print(f'Dice score of network: {m.result().numpy()}')
+# # Get Dice metric
+# m = tf.keras.metrics.MeanIoU(num_classes=2)
+# m.update_state(seg_pred, masks_ds_test)
+# print(f'Dice score of network: {m.result().numpy()}')
+
+print('\nSaving visualisation of predictions...')
+# Visualise predictions
+idx = list(range(img_ds_test.shape[0]))
+random.shuffle(idx)
+tools.show_seg_pred(img_ds_test[idx[0]], masks_ds_test[idx[0]], seg_pred[idx[0]][tf.newaxis, ...], bbox_ds_test[idx[0]], bbox_pred[idx[0]])

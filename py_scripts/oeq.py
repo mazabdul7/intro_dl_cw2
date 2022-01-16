@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 from utils.loader import DataLoader
 from models.effnet_encoder import EffnetEncoder
 from models.mtl_framework import MTLFramework
@@ -42,8 +43,8 @@ def generator_img_val():
         yield X, (Y1, Y2, Y3)
 
 # Set configs
-batch_size = 32
-batch_size_val = 32
+batch_size = 16
+batch_size_val = 16
 num_train, num_val, num_test = config.config['num_train'], config.config['num_val'], config.config['num_test']
 img_height, img_width, channels = config.config['input_shape']
 
@@ -103,6 +104,21 @@ model.compile(optimizer=keras.optimizers.Adam(1e-4),
               metrics=['accuracy'])
 history_sec = model.fit(generator_img(), validation_data=generator_img_val(), epochs=10, steps_per_epoch=num_train//batch_size, validation_steps=num_val//batch_size_val)
 
+print('Saving plot of training...')
+fig, ax = plt.subplots(figsize=(8,6))
+ax.plot(list(range(10)), history.history['segnet_out_accuracy'], 'r-', label='Segmentation - Training Accuracy')
+ax.plot(list(range(10)), history.history['val_segnet_out_accuracy'], 'r--', label='Segmentation - Validation Accuracy')
+ax.plot(list(range(10)), history.history['bin_class_out_accuracy'], 'c-', label='Classification - Training Accuracy')
+ax.plot(list(range(10)), history.history['val_bin_class_out_accuracy'], 'c--', label='Classification - Validation Accuracy')
+ax2 = ax.twinx()
+ax.plot(list(range(10)), history.history['bbox_out_accuracy'], 'm-', label='Bounding Box - Training Accuracy')
+ax.plot(list(range(10)), history.history['val_bbox_out_accuracy'], 'm--', label='Bounding Box - Validation Accuracy')
+ax.legend()
+ax.set_xlabel('Epochs')
+ax.set_ylabel('Segmentation/Classification Accuracy')
+ax2.set_ylabel('Bounding Box Accuracy')
+fig.savefig('main_mtl_training_history_plot.png')
+
 print('Saving model...')
 model.save('model_weights/EffishingNetAtt_Eff')
 
@@ -141,6 +157,13 @@ print(f'Recall of network: {m.result().numpy()}')
 m = tf.keras.metrics.MeanIoU(num_classes=2)
 m.update_state(seg_pred, masks_ds_test)
 print(f'Dice score of network: {m.result().numpy()}')
+
+print('\nSaving visualisation of predictions...')
+# Visualise predictions
+idx = list(range(img_ds_test.shape[0]))
+random.shuffle(idx)
+for i in range(3):
+    tools.show_seg_pred(img_ds_test[idx[i]], masks_ds_test[idx[i]], seg_pred[idx[i]][tf.newaxis, ...], bbox_ds_test[idx[i]], bbox_pred[idx[i]])
 
 print('Getting attention maps from model...')
 # # Get feature maps

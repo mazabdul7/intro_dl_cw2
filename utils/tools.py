@@ -56,6 +56,7 @@ def show_seg_pred(img: np.array, mask_truth: np.array, mask_pred: np.array, bbox
     ax2.set_title('Prediction')
     ax3.set_title('Truth')
     ax4.set_title('Prediction')
+    fig.savefig('PredictionsMTL.png')
     
 def create_mask(bbox: np.array, input_shape):
     ''' Generates mask of bbox inputs '''
