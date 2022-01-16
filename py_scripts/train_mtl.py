@@ -45,8 +45,8 @@ def generator_img_val():
         yield X, (Y1, Y2, Y3)
 
 # Set configs
-batch_size = 7
-batch_size_val = 7
+batch_size = 16
+batch_size_val = 16
 num_train, num_val, num_test = config.config['num_train'], config.config['num_val'], config.config['num_test']
 img_height, img_width, channels = config.config['input_shape']
 
@@ -145,20 +145,20 @@ seg_acc = np.sum(seg_pred == masks_ds_test)/(masks_ds_test.shape[0]*(img_height*
 iou = np.mean(tools.calculate_iou(bbox_ds_test, bbox_pred))
 print(f'Binary Acc: {round(bin_acc*100, 3)}%,   Seg Acc: {round(seg_acc*100, 3)}%,    BBox IOU: {round(iou*100, 3)}%')
 
-# # Get precision
-# m = tf.keras.metrics.Precision()
-# m.update_state(seg_pred, masks_ds_test)
-# print(f'Precision of network: {m.result().numpy()}')
+# Get precision
+m = tf.keras.metrics.Precision()
+m.update_state(seg_pred, masks_ds_test)
+print(f'Precision of network: {m.result().numpy()}')
 
-# # Get recall
-# m = tf.keras.metrics.Recall()
-# m.update_state(seg_pred, masks_ds_test)
-# print(f'Recall of network: {m.result().numpy()}')
+# Get recall
+m = tf.keras.metrics.Recall()
+m.update_state(seg_pred, masks_ds_test)
+print(f'Recall of network: {m.result().numpy()}')
 
-# # Get Dice metric
-# m = tf.keras.metrics.MeanIoU(num_classes=2)
-# m.update_state(seg_pred, masks_ds_test)
-# print(f'Dice score of network: {m.result().numpy()}')
+# Get Dice metric
+m = tf.keras.metrics.MeanIoU(num_classes=2)
+m.update_state(seg_pred, masks_ds_test)
+print(f'Dice score of network: {m.result().numpy()}')
 
 print('\nSaving visualisation of predictions...')
 # Visualise predictions
