@@ -1,0 +1,101 @@
+Hello and Welcome to our COMP0090 CW2 Project!
+
+This projects includes the following runnable python scripts, all found in the root folder:
+
+1. Baseline Models
+    1. train_unet:
+        - Trains a UNet model using 3fold validation.
+        - Saves the best model for each fold in model_weights/UNet/CV/best_unet_model_{fold}.h5
+        - Saves the history (training logs) for each fold in model_weights/UNet/CV/unet_training_{fold}.h5
+        - Picks the best model (model with lowest average loss)
+        - Plots the accuracy, dice coefficient and loss against the epochs for the training and validation sets
+        - Predicts the masks for the test set and prints its segmentation accuracy
+        - Plots 3 random ground truth and predicted masks
+
+    2. train_effnet:
+        - Trains a EffNet model using 3fold validation.
+        - Saves the best model for each fold in model_weights/EffNet/CV/best_effnet_model_{fold}.h5
+        - Saves the history (training logs) for each fold in model_weights/EffNet/CV/effnet_training_{fold}.h5
+        - Picks the best model (model with lowest average loss)
+        - Plots the accuracy, dice coefficient and loss against the epochs for the training and validation sets
+        - Predicts the masks for the test set and prints its segmentation accuracy
+        - Plots 3 random ground truth and predicted masks
+
+2. MTL Models
+    1. train_mtl:
+        - Trains MTL model on a learning rate of 10^-3
+        - Fine tunes the model by training another 10 epochs on a learning rate 10^-4
+        - Plots the accuracy for the image segmentation, the binary classification and the bounding box
+        - Saves the model at model_weights/EffishingNetN
+        - Concatanates the histories (training logs) of the two trainings
+        - Gets evaluated on the test set by predicting the masks and prints the segmentation, binary classification and bounding box accuracies
+        - Prints out the precision, recall and dice score of the network
+        - Plots the ground truth and prediction of a randomly selected test point
+    2. train_CV_seg_bbox:
+        - Runs 2fold CV on an MTL including bounding boxes and semantic segmentation
+        - Saves the history in a txt file in model_weights/MTL/CV/CV_seg_bbox.txt
+        - Plots segmentation accuracy for the training and validation set
+    3. train_CV_seg_bin:
+        - Runs 2fold CV on an MTL including binary classification and semantic segmentation
+        - Saves the history in a txt file in model_weights/MTL/CV/CV_seg_bin.txt
+        - Plots segmentation accuracy for the training and validation set
+    4. train_CV_three_heads:
+        - Runs 2fold CV on an MTL including binary classificationm bounding boxes and semantic segmentation
+        - Saves the history in a txt file in model_weights/MTL/CV/CV_three_heads.txt
+        - Plots segmentation accuracy for the training and validation set
+
+
+3. OEQ
+    1. oeq:
+        - Loads new dataset of animals
+        - Builds MTL with al auxillary tasks
+        - Trains MTL model on a learning rate of 10^-3
+        - Fine tunes the model by training another 10 epochs on a learning rate 10^-4
+        - Saves the model at model_weights/EffishingNetAtt_Eff
+        - Gets evaluated on the test set by predicting the masks and prints the segmentation, binary classification and bounding box accuracies
+        - Prints out the precision, recall and dice score of the network
+        - Plots the ground truth and prediction of three randomly selected test points
+        - Gets model's attnetion maps
+        - Builds a new model with the intermediate layer as output
+        - Plots the feature map of 50 images
+
+4. Comparison of OEQ MTL with Basic MTL
+       1. test_adversarial
+        - Loads new dataset of animals
+        - Loads basic MTL (model_weights/EffishingNetN trained on OxfordIII DataSet)
+        - Evaluates model by predicting the masks of the new DataSet
+        - Prints the segmentation pixel accuracy
+        - Loads OEQ MTL (model_weights/EffishingNetAtt_Eff trained on new animal DataSet)
+        - Evaluates model by predicting the masks of the new DataSet
+        - Prints the segmentation pixel accuracy
+
+
+5. Comparison of models
+    1. compare_models
+        The comparisons use the training logs (histories) and saved model for each model (EffNet, UNet and MTL).
+        Since EffNet and UNet have three saved models and logs (since we do 3fold CV), the one with the smallest loss is used
+        UNet vs EffNet
+            - Compares them by plotting their accuracies losses and dice coefficients against each other
+            - Prints out their pixel accuracy on the test set
+        MTL vs EffNet
+            - Compares them by plotting their accuracies and losses against each other
+            - Prints out their pixel accuracy on the test set
+
+Order of execution of models:
+
+    1. for the baseline and mtl-baseline comparison:
+        1. train_unet
+        2. train_effnet
+        3. train_mtl
+        4. compare_models
+
+   2. For doing MTL cross validation:
+        1. train_CV_seg_bbox
+        2. train_CV_seg_bin
+        3. train_CV_three_heads
+
+   3. For running the OEQ:
+       1. oeq
+
+   4. Comparison of OEQ MTL with Basic MTL
+       1. test_adversarial

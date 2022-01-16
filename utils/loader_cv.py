@@ -51,15 +51,15 @@ class DataLoaderCV:
         self.mask_path = r'masks.h5'
         self.bbox_path = r'bboxes.h5'
         self.bin_path = r'binary.h5'
-        self.train_path = r'../datasets/train'
-        self.val_path = r'../datasets/val'
-        self.test_path = r'../datasets/test'
+        self.train_path = r'datasets/train'
+        self.val_path = r'datasets/val'
+        self.test_path = r'datasets/test'
 
         # Configs
         self.batch_size = batch_size
         self.batch_size_val = batch_size_val
-        self.CrossVal = CrossVal
-        self.CV_iteration = CV_iteration
+        self.cross_val = CrossVal
+        self.cv_iteration = CV_iteration
         self.fold = fold
 
     def load_ds_generator(self, path, val=False):
@@ -67,7 +67,7 @@ class DataLoaderCV:
             Loads and returns batched tf.Dataset generator object from passed path.
             If val: loads validation set.
         '''
-        ds = tf.data.Dataset.from_generator(Generator(os.path.join(self.train_path if not val else self.val_path, path), self.batch_size if not val else self.batch_size_val, self.CrossVal, self.CV_iteration, self.fold), tf.float32)
+        ds = tf.data.Dataset.from_generator(Generator(os.path.join(self.train_path if not val else self.val_path, path), self.batch_size if not val else self.batch_size_val, self.cross_val, self.cv_iteration, self.fold), tf.float32)
         return ds
 
     def load_ds_test_set(self, path):
