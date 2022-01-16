@@ -86,7 +86,7 @@ model.summary()
 # Train model
 # Initial training
 print('\nBeginning training...')
-epochs = 10
+epochs = 15
 model.compile(optimizer=keras.optimizers.Adam(),
               loss={'segnet_out' : tf.keras.losses.BinaryCrossentropy(from_logits=True),
                     'bin_class_out' : tf.keras.losses.BinaryCrossentropy(),

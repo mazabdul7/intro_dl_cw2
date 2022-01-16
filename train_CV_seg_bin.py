@@ -5,7 +5,6 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 import json
-
 from utils.loader_cv import DataLoaderCV as DataLoader
 from models.effnet_encoder import EffnetEncoder
 from models.mtl_framework import MTLFramework

@@ -1,6 +1,6 @@
 # plot all metrics for the best model
 import numpy as np
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from matplotlib import pyplot as plt
 from tensorflow import where
 from utils.config import config

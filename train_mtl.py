@@ -1,6 +1,6 @@
 import pandas as pd
 import tensorflow as tf
-from keras.callbacks import CSVLogger
+from tensorflow.keras.callbacks import CSVLogger
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
@@ -90,7 +90,7 @@ model.summary()
 
 # Train model
 # Initial train
-epochs = 10
+epochs = 15
 print('Beginning training...')
 model.compile(optimizer=keras.optimizers.Adam(),
               loss={'segnet_out' : tf.keras.losses.BinaryCrossentropy(from_logits=True),

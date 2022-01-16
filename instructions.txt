@@ -48,18 +48,18 @@ This projects includes the following runnable python scripts, all found in the r
 3. OEQ
     1. oeq:
         - Loads new dataset of animals
-        - Builds MTL with al auxillary tasks
+        - Builds MTL with all auxillary tasks and attention
         - Trains MTL model on a learning rate of 10^-3
         - Fine tunes the model by training another 10 epochs on a learning rate 10^-4
         - Saves the model at model_weights/EffishingNetAtt_Eff
         - Gets evaluated on the test set by predicting the masks and prints the segmentation, binary classification and bounding box accuracies
         - Prints out the precision, recall and dice score of the network
         - Plots the ground truth and prediction of three randomly selected test points
-        - Gets model's attnetion maps
+        - Gets model's attention maps
         - Builds a new model with the intermediate layer as output
-        - Plots the feature map of 50 images
+        - Plots the feature map of 50 filters
 
-4. Comparison of OEQ MTL with Basic MTL
+4. Comparison of OEQ MTL with Basic MTL on adversarial inputs
        1. test_adversarial
         - Loads new dataset of animals
         - Loads basic MTL (model_weights/EffishingNetN trained on OxfordIII DataSet)

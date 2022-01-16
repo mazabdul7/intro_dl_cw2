@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
-from keras.callbacks import ModelCheckpoint, CSVLogger
-from keras.models import load_model
+from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger
+from tensorflow.keras.models import load_model
 
 import matplotlib.pyplot as plt
 import random
