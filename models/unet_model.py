@@ -1,10 +1,10 @@
 from tensorflow.keras import Model
-from keras.models import Model, Sequential, clone_model
-from keras.layers import Input
-from keras.layers.core import Dropout, Lambda
-from keras.layers.convolutional import Conv2D, Conv2DTranspose
-from keras.layers.pooling import MaxPooling2D
-from keras.layers.merge import concatenate
+from tensorflow.keras.models import Model, Sequential, clone_model
+from tensorflow.keras.layers import Input
+from tensorflow.python.keras.layers.core import Dropout, Lambda
+from tensorflow.python.keras.layers.convolutional import Conv2D, Conv2DTranspose
+from tensorflow.python.keras.layers.pooling import MaxPooling2D
+from tensorflow.python.keras.layers.merge import concatenate
 
 
 class UNet:
