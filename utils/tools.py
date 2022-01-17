@@ -29,6 +29,18 @@ def data_augmentation(input: tf.Tensor, mask: tf.Tensor, bbox: tf.Tensor) -> Tup
             
     return (input, mask, bbox_mask)
 
+def data_augmentation_baseline(input: tf.Tensor, mask: tf.Tensor) -> Tuple[tf.Tensor]:
+    ''' Applies random flip or rotation to input and mask '''
+    if np.random.rand() > 0.5:
+        if np.random.rand() > 0.5:
+            input = tf.image.flip_left_right(input)
+            mask = tf.image.flip_left_right(mask)
+        else:
+            input = tf.image.rot90(input)
+            mask = tf.image.rot90(mask)
+            
+    return input, mask
+
 
 def get_randomised_data(args) -> Tuple[np.array]:
 
@@ -105,6 +117,8 @@ def generator_img_baseline_data(images, masks):
 
         # Regularisation and shuffling
         X, Y = get_randomised_data([X, Y])
+        X, Y = data_augmentation_baseline(X, Y)
+        
         yield X, Y
 
 @tf.function

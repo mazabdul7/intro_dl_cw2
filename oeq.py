@@ -74,10 +74,13 @@ base_model_name = 'B0'
 encoder = EffnetEncoder(base_model_name, (img_height, img_width, channels)).build_encoder_with_attention(trainable=True) # EfficientNet with attention
 encoder.summary()
 
-# Use our MTL framework to custom build a model
-mtl_builder = MTLFramework(encoder, (img_height, img_width, channels)) # We pass the new attention based EfficientNet encoder
+print('Building MTL model...')
+mtl_builder = MTLFramework(encoder, (img_height, img_width, channels))
+print('Adding Segmentation head to model...')
 mtl_builder.add_segmentation_head()
+print('Adding Binary Classification head to model...')
 mtl_builder.add_binary_classification_head(base_model_name, trainable=True)
+print('Adding Bounding Box Regression head to model...')
 mtl_builder.add_bbox_classification_head(base_model_name, trainable=True)
 model = mtl_builder.build_mtl_model()
 model.trainable = True
@@ -177,7 +180,7 @@ new_model = tf.keras.Model(XX, YY)
 Xresult = new_model.predict(input_img) # Get feature map
 
 # Plot featuremap
-fig, ax = plt.subplots(5, 10, figsize=(15, 7)) # REMOVE?
+fig, ax = plt.subplots(5, 10, figsize=(15, 7))
 
 for j in range(5):
     for i in range(10):
