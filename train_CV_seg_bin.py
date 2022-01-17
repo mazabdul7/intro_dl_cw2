@@ -65,8 +65,8 @@ if __name__ == "__main__":
     img_height, img_width, channels = config.config['input_shape']
 
     ##### Change this to modify the folds #####
-    CVfolds = 2
-    ep = 2
+    CVfolds = 5
+    ep = 10
     ###########################################
     cv_history = []
     num_train_cv = num_train * (CVfolds-1)/CVfolds
