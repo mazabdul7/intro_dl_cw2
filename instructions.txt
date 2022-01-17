@@ -16,18 +16,15 @@ Prerequisites:
 1. Baseline Models
     1. train_unet:
         - Trains a UNet model using 3fold validation.
-        - Saves the best model for each fold in model_weights/UNet/CV/best_unet_model_{fold}.h5
+        - Saves the best model in model_weights/UNet/CV/best_unet_model_{fold}.h5
         - Saves the history (training logs) for each fold in model_weights/UNet/CV/unet_training_{fold}.h5
-        - Picks the best model (model with lowest average loss)
         - Plots the accuracy, dice coefficient and loss against the epochs for the training and validation sets
         - Predicts the masks for the test set and prints its segmentation accuracy
         - Plots 3 random ground truth and predicted masks
-
     2. train_effnet:
         - Trains a EffNet model using 3fold validation.
-        - Saves the best model for each fold in model_weights/EffNet/CV/best_effnet_model_{fold}.h5
+        - Saves the best model in model_weights/EffNet/CV/best_effnet_model_{fold}.h5
         - Saves the history (training logs) for each fold in model_weights/EffNet/CV/effnet_training_{fold}.h5
-        - Picks the best model (model with lowest average loss)
         - Plots the accuracy, dice coefficient and loss against the epochs for the training and validation sets
         - Predicts the masks for the test set and prints its segmentation accuracy
         - Plots 3 random ground truth and predicted masks

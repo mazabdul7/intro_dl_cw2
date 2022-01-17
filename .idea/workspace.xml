@@ -1,72 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0efebc2b-bb17-48b7-99f6-9a4caeffb40d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/instructions.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CV_3heads.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_CV_three_heads.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CV_SegBbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_CV_seg_bbox.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CV_SegBin.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_CV_seg_bin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/effnet_CrossValidation.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_effnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/effnet_baseline.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/examples.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/filehist.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/filehist2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/best_unet_model_1.h5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/best_unet_model_2.h5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/best_unet_model_3.h5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/unet_training_1.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/unet_training_2.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/UNet/CV/unet_training_3.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/best_effnet_model/keras_metadata.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/best_effnet_model/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/best_effnet_model/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/best_effnet_model/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/EFFNET_training_1.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/EFFNET_training_2.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/EFFNET_training_3.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_1.tf/keras_metadata.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_1.tf/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_1.tf/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_1.tf/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_2.tf/keras_metadata.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_2.tf/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_2.tf/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_2.tf/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_3.tf/keras_metadata.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_3.tf/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_3.tf/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_weights/effNet/CV/best_EFFNET_3.tf/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/oeq.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/oeq.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/py_scripts/compare_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/compare_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/py_scripts/oeq.py" beforeDir="false" afterPath="$PROJECT_DIR$/oeq.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/py_scripts/test_adversarial.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_adversarial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/py_scripts/train_mtl.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_mtl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/py_scripts/train_unet.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_unet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/saved_effnet_model/keras_metadata.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/saved_effnet_model/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/saved_effnet_model/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/saved_effnet_model/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/seg only.png" beforeDir="false" afterPath="$PROJECT_DIR$/MTL_CV_results/seg only.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seg+bbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/MTL_CV_results/seg+bbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seg+bin.png" beforeDir="false" afterPath="$PROJECT_DIR$/MTL_CV_results/seg+bin.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seg+both.png" beforeDir="false" afterPath="$PROJECT_DIR$/MTL_CV_results/seg+both.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_adversarial.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/test_adversarial.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_effnet_cv.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/test_effnet_cv.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/train.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_CV_3MTL.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/train_CV_3MTL.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_CV_bbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/train_CV_bbox.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_CV_binary.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/train_CV_binary.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_CV_segOnly.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training_models_jupyter_notebooks/train_CV_segOnly.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_mtl_myrto.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trygpu.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/trying.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/helper_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/loader_cv.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/loader_cv.py" afterDir="false" />
-    </list>
+    <list default="true" id="0efebc2b-bb17-48b7-99f6-9a4caeffb40d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
