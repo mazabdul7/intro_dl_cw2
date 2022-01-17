@@ -43,15 +43,15 @@ Prerequisites:
         - Prints out the precision, recall and dice score of the network
         - Plots the ground truth and prediction of a randomly selected test point
     2. train_CV_seg_bbox:
-        - Runs 2fold CV on an MTL including bounding boxes and semantic segmentation
+        - Runs 5-fold CV on an MTL including bounding boxes and semantic segmentation
         - Saves the history in a txt file in model_weights/MTL/CV/CV_seg_bbox.txt
         - Plots segmentation accuracy for the training and validation set
     3. train_CV_seg_bin:
-        - Runs 2fold CV on an MTL including binary classification and semantic segmentation
+        - Runs 5-fold CV on an MTL including binary classification and semantic segmentation
         - Saves the history in a txt file in model_weights/MTL/CV/CV_seg_bin.txt
         - Plots segmentation accuracy for the training and validation set
     4. train_CV_three_heads:
-        - Runs 2fold CV on an MTL including binary classificationm bounding boxes and semantic segmentation
+        - Runs 5-fold CV on an MTL including binary classificationm bounding boxes and semantic segmentation
         - Saves the history in a txt file in model_weights/MTL/CV/CV_three_heads.txt
         - Plots segmentation accuracy for the training and validation set
 
