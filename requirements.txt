@@ -1,2 +1,4 @@
-matplotlib==3.5.1
-pandas==1.3.5
+conda install -n comp0090-cw1 pip
+conda activate comp0090-cw1
+pip install matplotlib==3.5.1
+pip install pandas==1.3.5
