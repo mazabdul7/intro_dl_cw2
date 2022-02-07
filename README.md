@@ -18,13 +18,3 @@
 #### Step by Step instructions:
 [instructions.txt](instructions.txt)
 
-#### Cross Validation results: 
-<p float="left">
-  <img src="MTL_CV_results/seg only.png" width="45%" />
-  <img src="MTL_CV_results/seg+bbox.png" width="45%" /> 
-</p>
-
-<p float="left">
-  <img src="MTL_CV_results/seg+bin.png" width="45%" />
-  <img src="MTL_CV_results/seg+both.png" width="45%" /> 
-</p>
